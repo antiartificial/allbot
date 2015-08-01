@@ -158,10 +158,12 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 		
 		// Silence Bot
 		if lastLine[0] == strings.ToLower("!muzzle") {
-			if muzzle != false {
-				muzzle = false
-			} else {
+			if muzzle == false {
 				muzzle = true
+				channelSay(conn, line.Args[0], "Muzzle enabled")
+			} else {
+				muzzle = false
+				channelSay(conn, line.Args[0], "Muzzle disabled")
 			}
 			fmt.Printf("Muzzle set to: [%s]\n", muzzle)
 		}
@@ -180,6 +182,14 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 		}
 		//TODO bot privmsg handling
 	}
+}
+
+func channelSay(conn *irc.Conn, channel string, text string) {
+	if debug {
+		fmt.Printf("Channel Say fired:\n")
+	}
+	
+	conn.Privmsg(channel, text)
 }
 
 func triggerSay(conn *irc.Conn, lastLine []string, channel string) {
