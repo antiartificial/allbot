@@ -168,6 +168,13 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 			fmt.Printf("Muzzle set to: [%s]\n", muzzle)
 		}
 		
+		if lastLine[0] == strings.ToLower("!op") {
+			if line.Nick != botName && line.Nick == strings.Contains(users, line.Nick) {
+				//TODO do op
+			}
+			//TODO do unauthorized message?
+		}
+		
 		/*select {
 		case strings.ToLower("!say"):
 			triggerSay(conn, lastLine, line.Args[0]) // why can't we pass line.Args?
