@@ -169,8 +169,9 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 		}
 		
 		if lastLine[0] == strings.ToLower("!op") {
-			if line.Nick != botName && line.Nick == strings.Contains(users, line.Nick) {
+			if line.Nick != botName && line.Nick == "arti" {
 				//TODO do op
+				conn.Mode(line.Args[0], "+o") // do we need to add a key arg?
 			}
 			//TODO do unauthorized message?
 		}
