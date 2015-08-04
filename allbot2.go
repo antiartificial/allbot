@@ -7,6 +7,10 @@ import (
 	irc "github.com/fluffle/goirc/client"
 	//"encoding/json"
 	//"io/ioutil"
+	"os"
+	"io"
+	"log"
+	"bufio"
 )
 
 var debug = true;
@@ -127,14 +131,22 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 		}
 		
 		var lastLine = strings.Split(line.Args[1], " ")
-		l := lastLine[0];
-		select {
-		case l == strings.ToLower("!say"):
+
+		if lastLine[0] == strings.ToLower("!say") {
+			triggerSay(conn, lastLine, line.Args[0]) // why can't we pass line.Args?
+		}
+		
+		if lastLine[0] == strings.ToLower("!ll") {
+			findNickLastLine("testfile.txt", lastLine[1])
+		}
+		
+		/*select {
+		case strings.ToLower("!say"):
 			triggerSay(conn, lastLine, line.Args[0]) // why can't we pass line.Args?
 			fallthrough
 		default:
 			fmt.Println("No match.")
-		}
+		}*/
 	} else {
 		// PrivMSG is to bot.
 		if debug {
@@ -151,4 +163,35 @@ func triggerSay(conn *irc.Conn, lastLine []string, channel string) {
 	
 	//TODO ponder if sanity checking is better per function or @higher level
 	conn.Privmsg(channel, strings.Join(lastLine[1:len(lastLine)], " "))
+}
+
+func findNickLastLine(path string, nick string) {
+	if debug {
+		fmt.Printf("FindNickLastLine fired: [%s] [%s]\n", path, nick)
+	}
+	
+    f, err := os.Open(path)
+    if err != nil {
+        log.Fatal(err)
+    }
+    bf := bufio.NewReader(f)
+    for {
+        switch line, err := bf.ReadString('\n'); err {
+        case nil:
+            // valid line, echo it.  note that line contains trailing \n.
+			if strings.Contains(line, nick) {
+            	fmt.Print(line)
+			}
+        case io.EOF:
+            if line > "" {
+                // last line of file missing \n, but still valid
+                fmt.Println(line)
+            }
+            return
+        default:
+            log.Fatal(err)
+        }
+    }
+
+	//fmt.Println(lastLine)
 }

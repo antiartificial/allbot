@@ -1,0 +1,30 @@
+[21:24] <antiarti> ground breaking :P
+[21:26] <Landon> someone will figure out the perfect IRC/chat abstraction some day
+[21:26] <Landon> might as well contribute to the forward progress
+[21:27] <Landon> I have to say, this trend towards Slack/HipChat over IRC is kind of disappointing :( I hope it doesn't gathre too much steam
+[21:28] <antiarti> first i'm hearing about it
+[21:29] <antiarti> so it's jsut a front end for irc?
+[21:30] <antiarti> ah, it's a wrapper around multiple things
+[21:30] <Landon> it's a replacement :(
+[21:30] <antiarti> hahahahaha
+[21:31] <antiarti> guess we can start blocking by client type
+[21:31] <antiarti> recall mscomic chat
+[21:31] <Landon> no, complete replacement
+[21:31] <Landon> not client or server
+[21:32] <Landon> but it comes with the goodies we all wish IRC had... non-arcane file transfer ... channel history...
+[21:32] <Landon> and it's Enterprise
+[21:32] <Landon> :)
+[21:32] <antiarti> they're one of many, i'm not too worried
+[21:32] <antiarti> tired of subscription everything
+[21:33] <Landon> free for eval, sub for your company model
+[21:33] <antiarti> nothings more fun than company chat :D
+[21:35] <Landon> accidentally double clicked on the Continue;Are You Sure dialogue for disk partitioning
+[21:36] <Landon> tense moments, fingers crossed I don't mess up any of the disks I spent all weekend fixing up
+[21:37] <antiarti> :I
+[21:41] <Landon> yeah :) 
+[21:41] <antiarti> success?
+[21:41] <Landon> click through partition ... oh wait, that's not right! go back to edit so it doesn't screw up windows partition, then the mishap
+[21:42] <Landon> hope it got it right on the second try :P
+[21:42] <Landon> still installing
+[21:42] <Landon> we'll see at the end
+[21:44] <Landon> finishing installation
