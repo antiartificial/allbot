@@ -119,6 +119,8 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 		fmt.Printf("Event PrivMSG fired: [%s] [%b]\n", line, channel)
 	
 	}
+	
+	// Determine what type of privmsg it is (channel||to bot)
 	if channel {
 		if debug {
 			fmt.Printf("Line args: [%s]\n", line.Args[1])
@@ -134,7 +136,11 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 			fmt.Println("No match.")
 		}
 	} else {
-		
+		// PrivMSG is to bot.
+		if debug {
+			fmt.Printf("Line args: [%s]\n", line.Args[1])
+		}
+		//TODO bot privmsg handling
 	}
 }
 
