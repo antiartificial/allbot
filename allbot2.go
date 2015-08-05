@@ -16,7 +16,7 @@ import (
 var debug = true;
 var botName = "saruka"
 var ircServer = "irc.sylnt.us:6667"
-var channels = []string{"#", "#grue"}
+var channels = []string{"#grue"}
 var users = []string{"arti", "ciri"} //TODO Struct with permissions/types
 var autoJoin = true
 var muzzle = false
@@ -89,6 +89,16 @@ func main() {
 			
 		})
 		
+	c.HandleFunc("ctcp",
+		func(conn *irc.Conn, line *irc.Line) {
+			fmt.Printf("[%s] %s : %s\n", line.Cmd, line.Nick, line.Args )	
+			
+			if line.Args[0] == "VERSION" {
+				var name = strings.Split(line.Args[0], " ")
+				conn.CtcpReply(name[0], "VERSION", "allbot")
+			}
+		})
+		
     // And a signal on disconnect
     quit := make(chan bool)
     c.HandleFunc("disconnected",
@@ -108,7 +118,7 @@ func main() {
 
 func eventJoin(conn *irc.Conn, line *irc.Line) {
 	if debug {
-		fmt.Printf("Event Join fired: [%s]", line)
+		fmt.Printf("Event Join fired: [%s]\n", line)
 	}
 	
 	if botName != line.Nick {
@@ -137,7 +147,9 @@ func eventPrivmsg(conn *irc.Conn, line *irc.Line, channel bool) {
 		}
 		
 		if lastLine[0] == strings.ToLower("!ll") {
-			findNickLastLine("testfile.txt", lastLine[1])
+			var temp = findNickLastLine("testfile.txt", lastLine[1])
+			fmt.Println("line:"+temp)
+			conn.Privmsg(line.Args[0], temp)
 		}
 		
 		/*select {
@@ -165,7 +177,8 @@ func triggerSay(conn *irc.Conn, lastLine []string, channel string) {
 	conn.Privmsg(channel, strings.Join(lastLine[1:len(lastLine)], " "))
 }
 
-func findNickLastLine(path string, nick string) {
+// Returns last line containing nick string
+func findNickLastLine(path string, nick string) (line string) {
 	if debug {
 		fmt.Printf("FindNickLastLine fired: [%s] [%s]\n", path, nick)
 	}
@@ -175,11 +188,15 @@ func findNickLastLine(path string, nick string) {
         log.Fatal(err)
     }
     bf := bufio.NewReader(f)
+	
+	var lastLineWithNick string
+	
     for {
         switch line, err := bf.ReadString('\n'); err {
         case nil:
             // valid line, echo it.  note that line contains trailing \n.
-			if strings.Contains(line, nick) {
+			if strings.Contains(line, nick) { //TODO regex?
+				lastLineWithNick = line
             	fmt.Print(line)
 			}
         case io.EOF:
@@ -187,11 +204,12 @@ func findNickLastLine(path string, nick string) {
                 // last line of file missing \n, but still valid
                 fmt.Println(line)
             }
-            return
         default:
             log.Fatal(err)
         }
     }
-
-	//fmt.Println(lastLine)
+	
+	fmt.Printf("Last line with [%s] is [%s]\n", nick, lastLineWithNick)
+	return lastLineWithNick
+	
 }
