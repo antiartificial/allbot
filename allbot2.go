@@ -93,9 +93,13 @@ func main() {
 		func(conn *irc.Conn, line *irc.Line) {
 			fmt.Printf("[%s] %s : %s\n", line.Cmd, line.Nick, line.Args )	
 			
+			if debug {
+				fmt.Printf("Line args: [%s]\n", line.Args[0])
+			}
+			
 			if line.Args[0] == "VERSION" {
-				var name = strings.Split(line.Args[0], " ")
-				conn.CtcpReply(name[0], "VERSION", "allbot")
+				fmt.Printf("CTCP Reply sent to: [%s]\n", line.Nick)
+				conn.CtcpReply(line.Nick, "VERSION", "allbot")
 			}
 		})
 		
